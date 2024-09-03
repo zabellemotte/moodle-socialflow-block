@@ -1,0 +1,71 @@
+
+.block_socialflow .socialflow_optionselectform,
+.block_socialflow .socialflow_courseselectform,
+.block_socialflow .socialflow_typeselectform,
+.block_socialflow .socialflow_itemnumselectform{
+display:inline;
+}
+
+.block_socialflow .socialflow_optionselectopener,
+.block_socialflow .socialflow_courseselectopener,
+.block_socialflow .socialflow_typeselectopener,
+.block_socialflow .socialflow_itemnumselectopener,
+.block_socialflow .socialflow_helpopener
+{
+display:inline;
+margin-right:10px;
+border: 1px solid #8f959e;
+padding:6px 2px 6px 10px;
+border-radius:0.3rem;
+}
+
+.block_socialflow .socialflow_optionselectblock,
+.block_socialflow .socialflow_courseselectblock,
+.block_socialflow .socialflow_typeselectblock,
+.block_socialflow .socialflow_itemnumselectblock,
+.block_socialflow .socialflow_helpblock
+{
+display:none;
+margin-top:20px;
+}
+
+
+.block_socialflow .socialflow_optionselectform label,
+.block_socialflow .socialflow_courseselectform label,
+.block_socialflow .socialflow_typeselectform label,
+.block_socialflow .socialflow_itemnumselectform label,
+.block_socialflow .socialflow_helpform label
+{
+margin:0px 18px 0px 2px; 
+}
+
+.block_socialflow .expanded-icon .fa-chevron-down::before {
+font-size:70%;
+vertical-align:middle;
+}
+
+#socialflowdata {
+margin-top:10px;
+}
+
+.block_socialflow .socialflow_done {
+color:#73A839;
+}
+.block_socialflow .socialflow_todo {
+color:#025187;
+}
+.block_socialflow .socialflow_restricted {
+color:#323232;
+}
+
+.block_socialflow .socialflow_comment {
+color:#025187;
+}
+
+.block_socialflow .socialflow_comment.socialflow_critical {
+color:#801515;
+}
+
+.block_socialflow #socialflow_table tr.no_access td{
+color:#868686;
+}
