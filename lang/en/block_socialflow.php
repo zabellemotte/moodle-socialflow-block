@@ -35,7 +35,10 @@ $string['helptext']="<p>The social feed exploits the traces of student activitie
 <li> choose the number of lines displayed in the block (from 5 to 100). </li>
 </ul></p>
 <p>
-Some resources or activities appear grayed out in the list because they are configured with a restriction and you can not access them. Therefore, you should not take these items into account. </p>";
+Some resources or activities appear grayed out in the list because they are configured with a restriction and you can not access them. Therefore, you should not take these items into account. </p>
+<p>Teachers also have access to the social flow block with agglomerated student data.</p>
+<p> The data recorded to display the social feed block is cleaned every night to keep only the data that is strictly necessary.</p>
+";
 $string['surveytextintro']="<div>Do not forget to  ";
 $string['surveytextlink']="give us your opinion on social feed";
 $string['surveylink']="https://www.uclouvain.be";
