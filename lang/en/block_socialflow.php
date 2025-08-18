@@ -41,7 +41,7 @@ Some resources or activities appear grayed out in the list because they are conf
 ";
 $string['surveytextintro']="<div>Do not forget to  ";
 $string['surveytextlink']="give us your opinion on social feed";
-$string['surveylink']="https://www.uclouvain.be";
+$string['surveylink']="";
 $string['surveytextend']=".</div>";
 $string['option1'] = '2 weeks';
 $string['option2'] = '1 week';
