@@ -24,7 +24,7 @@
 
 $string['socialflow:addinstance'] = 'Add a "Social flow" block';
 $string['pluginname'] = 'Social flow';
-$string['privacy:metadata'] = 'The Social Flow A CONFIGURER.';
+$string['privacy:metadata'] = 'The Social Flow do not register data.';
 $string['blocktitle'] = 'Social flow';
 $string['helpbuttontext']="Help";
 $string['helptext']="<p>The social feed exploits the traces of student activities in the platform to aggregate them in an anonymised way and offer a view of the list of resources and activities that most engage the attention of students. This tool has been developed to support students' learning and help them set goals for themselves on a daily basis.</p>
