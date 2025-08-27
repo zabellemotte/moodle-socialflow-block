@@ -21,13 +21,15 @@
  * @copyright 2024 Zabelle Motte (UCLouvain)
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
-$string['socialflow:addinstance'] = 'Add a "Social flow" block';
-$string['pluginname'] = 'Social flow';
-$string['privacy:metadata'] = 'The Social Flow do not register data.';
 $string['blocktitle'] = 'Social flow';
-$string['helpbuttontext']="Help";
-$string['helptext']="<p>The social feed exploits the traces of student activities in the platform to aggregate them in an anonymised way and offer a view of the list of resources and activities that most engage the attention of students. This tool has been developed to support students' learning and help them set goals for themselves on a daily basis.</p>
+$string['close'] = 'Close';
+$string['closed'] = 'Closed ! ';
+$string['consult'] = 'Consultation';
+$string['contrib'] = 'Contribution';
+$string['csotext'] = 'Courses';
+$string['done'] = 'Done';
+$string['helpbuttontext'] = "Help";
+$string['helptext'] = "<p>The social feed exploits the traces of student activities in the platform to aggregate them in an anonymised way and offer a view of the list of resources and activities that most engage the attention of students. This tool has been developed to support students' learning and help them set goals for themselves on a daily basis.</p>
 <p>The tool's customisation options are as follows: <ul>
 <li>  choose the reference period from 1 day to 2 weeks, to be personalised according to your relationship to deadlines,  </li>
 <li> operate a selection of courses taken, to be personalised according to your expectations of each course, </li>
@@ -39,34 +41,31 @@ Some resources or activities appear grayed out in the list because they are conf
 <p>Teachers also have access to the social flow block with agglomerated student data.</p>
 <p> The data recorded to display the social feed block is cleaned every night to keep only the data that is strictly necessary.</p>
 ";
-$string['surveytextintro']="<div>Do not forget to  ";
-$string['surveytextlink']="give us your opinion on social feed";
-$string['surveylink']="";
-$string['surveytextend']=".</div>";
+$string['insotext'] = 'Number of lines';
+$string['latedate'] = 'Late ! <br> Closing : ';
+$string['limitdate'] = "Deadline : ";
+$string['nextupdate'] = 'Next update : ';
+$string['nodata'] = 'No data available, come back later or modify selection options';
 $string['option1'] = '2 weeks';
 $string['option2'] = '1 week';
 $string['option3'] = '3 days';
 $string['option4'] = '1 day';
+$string['osotext'] = 'Reference period';
+$string['pluginname'] = 'Social flow';
+$string['privacy:metadata'] = 'The Social Flow does not store any data.';
+$string['restricted'] = 'No access';
+$string['save'] = 'Save';
+$string['socialflow:addinstance'] = 'Add a "Social flow" block';
+$string['surveylink'] = "";
+$string['surveytextend'] = ".</div>";
+$string['surveytextintro'] = "<div>Do not forget to  ";
+$string['surveytextlink'] = "give us your opinion on social feed";
+$string['todo'] = 'To do';
+$string['tsotext'] = 'Actions';
+$string['type1'] = 'Consultation';
+$string['type2'] = 'Contribution';
+$string['type3'] = 'Both';
 $string['value1'] = '14';
 $string['value2'] = '7';
 $string['value3'] = '3';
 $string['value4'] = '1';
-$string['osotext'] = 'Reference period'; // oso=option selection option
-$string['csotext'] = 'Courses'; // cso=course selection option
-$string['type1']='Consultation';
-$string['type2']='Contribution';
-$string['type3']='Both';
-$string['consult']='Consultation';
-$string['contrib']='Contribution';
-$string['tsotext']='Actions'; //tso=type selection option
-$string['insotext']='Number of lines'; //inso=item number selection option
-$string['save'] = 'Save'; 
-$string['close'] = 'Close'; 
-$string['nodata'] = 'No data available, come back later or modify selection options'; 
-$string['done'] = 'Done';
-$string['todo'] = 'To do';
-$string['restricted'] = 'No access';
-$string['nextupdate'] = 'Next update : ';
-$string['limitdate'] = "Deadline : ";
-$string['latedate'] = 'Late ! <br> Closing : ';
-$string['closed'] = 'Closed ! ';
