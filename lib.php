@@ -24,42 +24,27 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-
-
-/**
- * Get the current user preferences that are available
- *
- * @uses core_user::is_current_user
- *
- * @return array[] Array representing current options along with defaults
- */
-
-
-    $preferences['socialflow_optionchoice'] = array(
+    $preferences['socialflow_optionchoice'] = [
         'null' => NULL_NOT_ALLOWED,
         'default' => 14,
         'type' => PARAM_ALPHA,
-        'choices' => array(14,7,3,1),
+        'choices' => [14, 7, 3, 1],
         'permissioncallback' => [core_user::class, 'is_current_user'],
-    );
-    
-    $preferences['socialflow_courseschoice'] = array(
+    ];
+
+    $preferences['socialflow_courseschoice'] = [
         'null' => NULL_ALLOWED,
         'default' => null,
         'type' => PARAM_RAW,
         'permissioncallback' => [core_user::class, 'is_current_user'],
-    );
+    ];
 
-
-    $preferences['socialflow_typechoice'] = array(
+    $preferences['socialflow_typechoice'] = [
         'null' => NULL_NOT_ALLOWED,
         'default' => 'both',
         'type' => PARAM_ALPHA,
-        'choices' => array('consult','contrib','both'),
+        'choices' => ['consult', 'contrib', 'both'],
         'permissioncallback' => [core_user::class, 'is_current_user'],
-    );
-
+    ];
 
     return $preferences;
-   
-
