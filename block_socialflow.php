@@ -461,8 +461,8 @@ class block_socialflow extends block_base {
             default:
                 throw new Exception("Unsupported SGBD: " . $dbtype);
         }
-        // Uncomment line below to discover the beautiful socialflow request !
-        // $this->content->text.="<div> $sql </div>";
+        // Display the $sql variable to discover the beautiful socialflow request !
+        // Add this command on a new line : $this->content->text.="<div> $sql </div>";.
         $result = $DB->get_recordset_sql($sql); // See https://moodle.org/mod/forum/discuss.php?d=60818.
 
         /**************************************
