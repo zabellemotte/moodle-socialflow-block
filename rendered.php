@@ -22,13 +22,26 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-<?php
 
-defined('MOODLE_INTERNAL') || die();
-
+/**
+ * Renderer for the SocialFlow block.
+ *
+ * Provides functions to use default Moodle help icon.
+ *
+ * @package    block_socialflow
+ * @copyright  Zabelle Motte (UCLouvain)
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class block_socialflow_renderer extends plugin_renderer_base {
-    
-  public function help_icon($identifier, $component) {
+
+    /**
+     * Render a help icon for a given string identifier.
+     *
+     * @param string $identifier The identifier of the help string.
+     * @param string $component The language component containing the string.
+     * @return string HTML for the help icon.
+     */
+    public function help_icon($identifier, $component) {
         // Utilise l'icône d'aide par défaut de Moodle.
         $helptext = get_string($identifier, $component);
         return $this->output->pix_icon('i/help', $helptext);
