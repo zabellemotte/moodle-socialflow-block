@@ -41,7 +41,7 @@ class block_socialflow_renderer extends plugin_renderer_base {
      * @param string $component The language component containing the string.
      * @return string HTML for the help icon.
      */
-    public function help_icon($identifier, $component) {
+    public function help_icon($identifier, $component): string {
         // Utilise l'icône d'aide par défaut de Moodle.
         $helptext = get_string($identifier, $component);
         return $this->output->pix_icon('i/help', $helptext);
