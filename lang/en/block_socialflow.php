@@ -29,7 +29,7 @@ $string['contrib'] = 'Contribution';
 $string['csotext'] = 'Courses';
 $string['done'] = 'Done';
 $string['helpbuttontext'] = "Help";
-$string['helptext'] = "<p>The social feed exploits the traces of student activities in the platform to aggregate them in an anonymised way and offer a view of the list of resources and activities that most engage the attention of students. This tool has been developed to support students' learning and help them set goals for themselves on a daily basis.</p>
+$string['helptext'] = "<p>The social flow exploits the traces of student activities in the platform to aggregate them in an anonymised way and offer a view of the list of resources and activities that most engage the attention of students. This tool has been developed to support students' learning and help them set goals for themselves on a daily basis.</p>
 <p>The tool's customisation options are as follows: <ul>
 <li>  choose the reference period from 1 day to 2 weeks, to be personalised according to your relationship to deadlines,  </li>
 <li> operate a selection of courses taken, to be personalised according to your expectations of each course, </li>
