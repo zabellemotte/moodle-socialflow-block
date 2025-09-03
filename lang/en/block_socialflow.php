@@ -31,7 +31,7 @@ $string['done'] = 'Done';
 $string['helpbuttontext'] = "Help";
 $string['helptext'] = "<p>The social flow exploits the traces of student activities in the platform to aggregate them in an anonymised way and offer a view of the list of resources and activities that most engage the attention of students. This tool has been developed to support students' learning and help them set goals for themselves on a daily basis.</p>
 <p>The tool's customisation options are as follows: <ul>
-<li>  choose the reference period from 1 day to 2 weeks, to be personalised according to your relationship to deadlines,  </li>
+<li> choose the reference period from 1 day to 2 weeks, to be personalised according to your relationship to deadlines,  </li>
 <li> operate a selection of courses taken, to be personalised according to your expectations of each course, </li>
 <li> display actions related to consultations (such as watching a video), contributions (such as submitting an assignment), or both, </li>
 <li> choose the number of lines displayed in the block (from 5 to 100). </li>
@@ -39,7 +39,7 @@ $string['helptext'] = "<p>The social flow exploits the traces of student activit
 <p>
 Some resources or activities appear grayed out in the list because they are configured with a restriction and you can not access them. Therefore, you should not take these items into account. </p>
 <p>Teachers also have access to the social flow block with agglomerated student data.</p>
-<p> The data recorded to display the social feed block is cleaned every night to keep only the data that is strictly necessary.</p>
+<p> The data recorded to display the social flow block is cleaned every night to keep only the data that is strictly necessary.</p>
 ";
 $string['insotext'] = 'Number of lines';
 $string['latedate'] = 'Late ! <br> Closing : ';
@@ -59,7 +59,7 @@ $string['socialflow:addinstance'] = 'Add a "Social flow" block';
 $string['surveylink'] = "";
 $string['surveytextend'] = ".</div>";
 $string['surveytextintro'] = "<div>Do not forget to  ";
-$string['surveytextlink'] = "give us your opinion on social feed";
+$string['surveytextlink'] = "give us your opinion on social flow";
 $string['todo'] = 'To do';
 $string['tsotext'] = 'Actions';
 $string['type1'] = 'Consultation';
