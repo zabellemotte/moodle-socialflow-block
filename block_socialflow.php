@@ -214,7 +214,7 @@ class block_socialflow extends block_base {
         };
 
         /***********************************************************
-         *          DISPLAY FILTER OPTIONS  AND BUTTONS            *
+         *          DISPLAY FILTER OPTIONS AND BUTTONS             *
          ***********************************************************
          */
         $this->content = new stdClass; // Necessary to avoid PHP 8 error !
@@ -376,16 +376,16 @@ class block_socialflow extends block_base {
         $loglifetime = time() - ($currentchoice * 3600 * 24); // Value in days.
         $now = time();
 
-        // Social flow datas are computed based on hits, chosen log period ...
+        // Social flow data is computed based on hits, chosen log period ...
         // Closing dates and chosen action type (contib or consult).
-        // The imbricated request with first part that selects the pertinent hits line ...
+        // The imbricated query with first part that selects the pertinent hits line ...
         // Enables to ensure good performance (WITH event_hits AS (...)).
         // Closed activities are excluded from social flow when 48 hours passed after closing date to avoid student despondency.
-        // This is done with this part of request (c.closingdate<(".$now."+172800)).
-        // Frequences are computed based on a CASE clause to enable computation for all courses in 1 request.
+        // This is done with this part of query (c.closingdate<(".$now."+172800)).
+        // Frequences are computed based on a CASE clause to enable computation for all courses in 1 query.
         // Actions associated to hidden activities and resources are hidden from the social flow (cm.visible = 1).
         // Actions associated to activities or ressources in an hidden section are hidden from the social flow (cs.visible=1).
-        // Request has been adapted to the different moodle supported database types based on chatgpt help.
+        // Query has been adapted to the different moodle supported database types based on chatgpt help.
 
         $dbtype = $CFG->dbtype;
 
@@ -417,7 +417,7 @@ class block_socialflow extends block_base {
             $sql .= "AND evts.actiontype = '" . $currenttype . "' ";
         }
 
-        // Hit request depend on the SGBD, thanks to Chatgpt for conversion !
+        // Hit query depend on the SGBD, thanks to Chatgpt for conversion !
         switch ($dbtype) {
             case 'mariadb':
                 $sql .= "ORDER BY freq DESC LIMIT " . $currentitemnum . ";";
@@ -461,7 +461,7 @@ class block_socialflow extends block_base {
             default:
                 throw new Exception("Unsupported SGBD: " . $dbtype);
         }
-        // Display the $sql variable to discover the beautiful socialflow request !
+        // Display the $sql variable to discover the beautiful socialflow query !
         // Add this command on a new line : $this->content->text.="<div> $sql </div>";.
         $result = $DB->get_recordset_sql($sql); // See https://moodle.org/mod/forum/discuss.php?d=60818.
 
