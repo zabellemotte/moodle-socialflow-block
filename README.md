@@ -30,7 +30,7 @@ The Social Flow view is based on two plugins:
 # Installation
 
 ## Requirements
-- Moodle: Version 4.4 or higher (currently testing with 4.4, 4.5 and 5.0)
+- Moodle: Version 4.4 or higher (currently testing with 4.4, 4.5, 5.0 and 5.1)
 - Database: MySQL/MariaDB or Postgres (other database types are implemented but have not been tested)
 
 ## Download
@@ -65,6 +65,7 @@ The plugin is configure to run 3 cron tasks during the night to refresh the soci
 On a test platform, you have to make some actions in courses as a student and then run the 2 cron task associated to social flow so that social flow tables are filled: 
 - first run `\logstore_socialflow\task\nbpa_task` task (computes the number of students in each `logstore_socialflow_log` table logged course and stores this informations in the `logstore_socialflow_nbpa` table )
 - then run the `\logstore_socialflow\task\hits_task` task (computes the number of hits for each action in the `logstore_socialflow_log` table and stores this in the `logstore_socialflow_hits` table; then get informations about the closing dates of logged activities and stores it in the `logstore_socialflow_closing` table)
+
 Note that `\logstore_socialflow\task\cleanup_task` performs data cleanup in the log table.
 
 If needed, the scheduled tasks may be runned manually while following the [Official documentation on scheduled tasks](https://docs.moodle.org/500/en/Scheduled_tasks).
