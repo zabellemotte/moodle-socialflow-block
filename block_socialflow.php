@@ -22,7 +22,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class block_socialflow extends block_base {
-
     /**
      * Socialflow block definition
      *
@@ -97,7 +96,7 @@ class block_socialflow extends block_base {
         $itemnums = [5, 10, 15, 20, 30, 50, 100];
 
         // Get list of choosen options.
-        if ( isset( $_POST['socialflow_optionchoice'] ) ) {
+        if (isset($_POST['socialflow_optionchoice'])){
             $currentchoice = $_POST['socialflow_optionchoice'];
             set_user_preference('socialflow_optionchoice', $currentchoice);
         } else if (!is_null(get_user_preferences('socialflow_optionchoice'))) {
@@ -107,7 +106,7 @@ class block_socialflow extends block_base {
         }
 
         // Get list of choosen type.
-        if ( isset( $_POST['socialflow_typechoice'] ) ) {
+        if (isset($_POST['socialflow_typechoice'])){
             $currenttype = $_POST['socialflow_typechoice'];
             set_user_preference('socialflow_typechoice', $currenttype);
         } else if (!is_null(get_user_preferences('socialflow_typechoice'))) {
@@ -117,7 +116,7 @@ class block_socialflow extends block_base {
         }
 
         // Get items number choice.
-        if ( isset( $_POST['socialflow_itemnumchoice'] ) ) {
+        if (isset($_POST['socialflow_itemnumchoice'])){
             $currentitemnum = $_POST['socialflow_itemnumchoice'];
             set_user_preference('socialflow_itemnumchoice', $currentitemnum);
         } else if (!is_null(get_user_preferences('socialflow_itemnumchoice'))) {
@@ -134,14 +133,14 @@ class block_socialflow extends block_base {
         // If an event arises in a new couse, the number of participants is computed and stored.
         $courselistarray = [];
         $allcourses = [];
-        $studentroles = "('".get_config('logstore_socialflow', 'tracking_roles')."')";
+        $studentroles = "('" . get_config('logstore_socialflow', 'tracking_roles') . "')";
         if ($courses = enrol_get_my_courses()) {
             foreach ($courses as $course) {
                 $courseid = $course->id;
                 $courseshortname = $course->shortname;
                 $courselistarray[$courseid] = $courseshortname;
                 $now = time();
-                $sql1 = "SELECT nbpa FROM {logstore_socialflow_nbpa} WHERE courseid=".$courseid;
+                $sql1 = "SELECT nbpa FROM {logstore_socialflow_nbpa} WHERE courseid=" . $courseid;
                 $result1 = $DB->get_record_sql($sql1);
                 // If number of participants is not stored in nbpa table, it is computed and stored.
                 if (!$result1) {
@@ -181,17 +180,17 @@ class block_socialflow extends block_base {
                 array_push($allcourses, $courseid);
             }
         } else {
-            $this->content = new stdClass;
-            $this->content->text = "<div class='socialflow_error'> ".get_string('nodata', 'block_socialflow').'<div>';
+            $this->content = new stdClass();
+            $this->content->text = "<div class='socialflow_error'> " . get_string('nodata', 'block_socialflow') . '<div>';
             return $this->content;
         }
 
         // Get list of choosen courses or select all.
-        if (isset( $_POST['socialflow_courseschoice'] ) ) {
+        if (isset($_POST['socialflow_courseschoice'])){
             $currentcourses = $_POST['socialflow_courseschoice'];
             $currentcoursesstring = implode(',', $currentcourses);
             set_user_preference('socialflow_courseschoice', $currentcoursesstring);
-        } else if ( !is_null( get_user_preferences('socialflow_courseschoice') ) ) {
+        } else if (!is_null( get_user_preferences('socialflow_courseschoice'))){
             $currentcoursesstring = get_user_preferences('socialflow_courseschoice');
             $allcurrentcourses = explode(',', $currentcoursesstring);
             $currentcourses = [];
@@ -204,8 +203,8 @@ class block_socialflow extends block_base {
                 }
             }
             if ($currentcourses == []) {
-                $this->content = new stdClass;
-                $this->content->text = "<div class='socialflow_error'> ".get_string('nodata', 'block_socialflow').'<div>';
+                $this->content = new stdClass();
+                $this->content->text = "<div class='socialflow_error'> " . get_string('nodata', 'block_socialflow') . '<div>';
                 return $this->content;
             }
         } else {
@@ -217,7 +216,7 @@ class block_socialflow extends block_base {
          *          DISPLAY FILTER OPTIONS AND BUTTONS             *
          ***********************************************************
          */
-        $this->content = new stdClass; // Necessary to avoid PHP 8 error !
+        $this->content = new stdClass(); // Necessary to avoid PHP 8 error !
         $this->content->text = '';
 
         // Button to open option selection form.
@@ -267,8 +266,8 @@ class block_socialflow extends block_base {
             } else {
                 $checked = '';
             }
-            $this->content->text .= "<input type='radio' name='socialflow_optionchoice' value='".$values[$i]."' ".$checked."/>";
-            $this->content->text .= "<label>".$options[$i]."</label>";
+            $this->content->text .= "<input type='radio' name='socialflow_optionchoice' value='" . $values[$i] . "' " . $checked . "/>";
+            $this->content->text .= "<label>" . $options[$i] . "</label>";
         }
         // Submit button for option selection form.
         $this->content->text .= html_writer::start_tag('button', ['class' => 'socialflow_optionselectbutton',
@@ -314,8 +313,8 @@ class block_socialflow extends block_base {
             } else {
                 $checked = '';
             }
-            $this->content->text .= "<input type='radio' name='socialflow_typechoice' value='".$tvalues[$i]."' ".$checked."/>";
-            $this->content->text .= "<label>".$types[$i]."</label>";
+            $this->content->text .= "<input type='radio' name='socialflow_typechoice' value='" . $tvalues[$i] . "' " . $checked . "/>";
+            $this->content->text .= "<label>" . $types[$i] . "</label>";
         }
         // Submit button for type selection form.
         $this->content->text .= html_writer::start_tag('button', ['class' => 'socialflow_typeselectbutton',
@@ -337,8 +336,8 @@ class block_socialflow extends block_base {
             } else {
                 $checked = '';
             }
-            $this->content->text .= "<input type='radio' name='socialflow_itemnumchoice' value='".$itemnums[$i]."' ".$checked."/>";
-            $this->content->text .= "<label>".$itemnums[$i]."</label>";
+            $this->content->text .= "<input type='radio' name='socialflow_itemnumchoice' value='" . $itemnums[$i] . "' " . $checked . "/>";
+            $this->content->text .= "<label>" . $itemnums[$i] . "</label>";
         }
         // Submit button for item number selection form.
         $this->content->text .= html_writer::start_tag('button', ['class' => 'socialflow_itemnumselectbutton',
@@ -353,8 +352,8 @@ class block_socialflow extends block_base {
         $this->content->text .= get_string('helptext', 'block_socialflow');
         $surveylink = get_string('surveylink', 'block_socialflow');
         if ($surveylink != "") {
-            $this->content->text .= get_string('surveytextintro', 'block_socialflow')."<a href='".$surveylink."' target='_blank'> "
-            .get_string('surveytextlink', 'block_socialflow')."</a>".get_string('surveytextend', 'block_socialflow');
+            $this->content->text .= get_string('surveytextintro', 'block_socialflow') . "<a href='".$surveylink."' target='_blank'> "
+            . get_string('surveytextlink', 'block_socialflow') . "</a>" . get_string('surveytextend', 'block_socialflow');
         }
         $this->content->text .= html_writer::start_tag('form', ['action' => '', 'method' => 'post',
         'class' => 'socialflow_helpform']);
@@ -470,7 +469,7 @@ class block_socialflow extends block_base {
          **************************************
          */
         if (!$result) {
-            $this->content->text .= "<div class='socialflow_error'> ".get_string('nodata', 'block_socialflow').'<div>';
+            $this->content->text .= "<div class='socialflow_error'> " . get_string('nodata', 'block_socialflow') . '<div>';
         } else {
             $this->content->text .= "<div id='socialflowdata'> <table id='socialflow_table' class='generaltable'>";
             foreach ($result as $row) {
@@ -500,9 +499,9 @@ class block_socialflow extends block_base {
                 $moduletable = $row->moduletable;
                 $modulenameinlang = get_string("modulename", "$moduletable");
                 $moduleicon = $OUTPUT->pix_icon('icon', $modulenameinlang, $modulename, ['class' => 'iconlarge activityicon']);
-                $moduleurl = new moodle_url('/mod/'.$modulename."/view.php", ['id' => $instanceid]);
+                $moduleurl = new moodle_url('/mod/' . $modulename . "/view.php", ['id' => $instanceid]);
                 // Get the activity or resource title.
-                $sql5 = "SELECT name FROM {".$modulename."} WHERE id=$instance";
+                $sql5 = "SELECT name FROM {" . $modulename . "} WHERE id=$instance";
                 $result5 = $DB->get_record_sql($sql5);
                 if (!$result5) {
                     continue;
@@ -513,15 +512,15 @@ class block_socialflow extends block_base {
                 // Test role of the actual user on course where action occured ...
                 // To know if done/todo informations have to be shown.
                 $context = context_COURSE::instance($courseid);
-                if ($available == 1) {
-                    if (has_capability('moodle/site:config', $context, $cuserid, true) ) { // User is an admin.
+                if ($available == 1){
+                    if (has_capability('moodle/site:config', $context, $cuserid, true) ){ // User is an admin.
                         $done = "";
-                    } else if (has_capability('mod/assign:submit', $context, $cuserid, true) ) { // Faster than role verification.
+                    } else if (has_capability('mod/assign:submit', $context, $cuserid, true) ){ // Faster than role verification.
                         // Hits table stores concatenated userids to make access to this information fast.
                         $useridsstring = $row->userids;
                         $userids = explode(',', $useridsstring);
                         $isdone = 0;
-                        if (in_array($cuserid, $userids)) {
+                        if (in_array($cuserid, $userids)){
                             $isdone = 1;
                         } else {
                             // Verify if user operated action recently while searching in recent logs (since last hits cron run).
@@ -566,7 +565,7 @@ class block_socialflow extends block_base {
                             $haslatesubmit = $row->haslatesubmit;
                             if ($hasclosingdate > 0) {
                                 // Get the closing date information.
-                                $sql6 = "SELECT closingdate FROM {logstore_socialflow_closing} WHERE hitid=".$hitid;
+                                $sql6 = "SELECT closingdate FROM {logstore_socialflow_closing} WHERE hitid=" . $hitid;
                                 $result6 = $DB->get_record_sql($sql6);
                                 // Error on $result6 should not arrise has far as all hits have a closingdate completed.
                                 // But let make sure it works whatever.
@@ -581,11 +580,11 @@ class block_socialflow extends block_base {
                                 }
                                 if ($haslatesubmit > 0) {
                                     $latedatefield = $row->latedatefield;
-                                    $sql7 = "SELECT ".$latedatefield." FROM {".$moduletable. "} WHERE id=".$instance;
+                                    $sql7 = "SELECT " . $latedatefield . " FROM {" . $moduletable . "} WHERE id=" . $instance;
                                     // In core plugins, the default value for late date field is 0.
                                     // But in some additionnal plugins default value is null.
                                     $result7 = $DB->get_record_sql($sql7);
-                                    if (($result7)&&($result7 !== null)) {
+                                    if (($result7) && ($result7 !== null)) {
                                         $latedatet = $result7->$latedatefield;
                                         // In additionnal plugins, it may arise that undefined latedate correspond to value 0.
                                         if ($latedatet == 0) {
@@ -598,43 +597,43 @@ class block_socialflow extends block_base {
                                 }
                                 if (isset($latedate)) {
                                     if ($now < $latedatet) {
-                                        $comment = "<br/><span class='socialflow_comment'>".
-                                        get_string('limitdate', 'block_socialflow').
-                                        "<br/>".$latedate."</span>";
+                                        $comment = "<br/><span class='socialflow_comment'>" . 
+                                        get_string('limitdate', 'block_socialflow'). 
+                                        "<br/>" . $latedate . "</span>";
                                     } else if ($now < $closingdatet) {
-                                        $comment = "<br/><span class='socialflow_comment socialflow_critical'>".
-                                        get_string('latedate', 'block_socialflow')."<br/>".$closingdate."</span>";
+                                        $comment = "<br/><span class='socialflow_comment socialflow_critical'>" . 
+                                        get_string('latedate', 'block_socialflow') . "<br/>" . $closingdate . "</span>";
                                     } else {
                                         $comment = "<br/><span class='socialflow_comment socialflow_critical'>".
-                                        get_string('closed', 'block_socialflow')."</span>";
+                                        get_string('closed', 'block_socialflow') . "</span>";
                                     }
                                 } else if (isset($closingdate)) {
                                     if ($now < $closingdatet) {
-                                        $comment = "<br/><span class='socialflow_comment'>".
-                                        get_string('limitdate', 'block_socialflow').
-                                        "<br/>".$closingdate."</span>";
+                                        $comment = "<br/><span class='socialflow_comment'>" . 
+                                        get_string('limitdate', 'block_socialflow') . 
+                                        "<br/>" . $closingdate . "</span>";
                                     } else {
                                         $comment = "<br/><span class='socialflow_comment socialflow_critical'>".
-                                        get_string('closed', 'block_socialflow')."</span>";
+                                        get_string('closed', 'block_socialflow') . "</span>";
                                     }
                                 } else {
                                     $comment = "";
                                 }
                             }
-                            $done = '<span class="socialflow_todo">'.get_string('todo', 'block_socialflow').'</span>'.$comment;
+                            $done = '<span class="socialflow_todo">' . get_string('todo', 'block_socialflow') . '</span>' . $comment;
                         } else {
-                            $done = '<span class="socialflow_done">'.get_string('done', 'block_socialflow').'</span>';
+                            $done = '<span class="socialflow_done">' . get_string('done', 'block_socialflow') . '</span>';
                         }
                     } else {
                         // User is not student, so it is a teacher or admin that does not need to have done/todo informations.
                         $done = "";
                     }
                 } else { // Here $available=0 and student may not acces to the activity or ressource due to restriction.
-                    $done = '<span class="socialflow_restricted">'.get_string('restricted', 'block_socialflow').'</span>';
+                    $done = '<span class="socialflow_restricted">' . get_string('restricted', 'block_socialflow') . '</span>';
                 }
                 if ($available == 1) {
                     $this->content->text .= "<tr><td>$shortname</td><td>$moduleicon</td><td>$modulenameinlang</td>
-                    <td><a href='".$moduleurl."'>$title</a></td><td>$actiontypelang </td> <td>$freqp%<td> $done </td></tr>";
+                    <td><a href='" . $moduleurl . "'>$title</a></td><td>$actiontypelang </td> <td>$freqp%<td> $done </td></tr>";
                 } else {
                     // It is impossible to exclude restricted activities or ressources from social flow.
                     // So, they are show in gray with unactive link, this is explained in socialflow help tab.
@@ -650,8 +649,8 @@ class block_socialflow extends block_base {
         if ($result8) {
             $nextruntimet = $result8->nextruntime;
             $nextruntime = userdate( $nextruntimet, '%A %d %B %Y %H:%M');
-            $this->content->text .= "<div class='block_socialflow_update'>".get_string('nextupdate', 'block_socialflow').
-            $nextruntime."</div>";
+            $this->content->text .= "<div class='block_socialflow_update'>" . get_string('nextupdate', 'block_socialflow').
+            $nextruntime . "</div>";
         }
         return $this->content;
     }
