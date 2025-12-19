@@ -153,7 +153,7 @@ class block_socialflow extends block_base {
                                          INNER JOIN {course} c ON c.id = ct.instanceid AND e.courseid = c.id
                                          INNER JOIN {role} r ON r.id = ra.roleid AND r.shortname IN " . $studentroles . "
                                          WHERE e.status = 0 AND u.suspended = 0 AND u.deleted = 0
-                                         AND (ue.timeend = 0 OR ue.timeend > " . $now . ") 
+                                         AND (ue.timeend = 0 OR ue.timeend > " . $now . ")
                                          AND ue.status = 0 AND c.id =" . $courseid;
                     $result2 = $DB->get_record_sql($sql2);
                     if (!$result2) {
