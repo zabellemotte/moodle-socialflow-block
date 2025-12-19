@@ -33,7 +33,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class block_socialflow_renderer extends plugin_renderer_base{
-
     /**
      * Render a help icon for a given string identifier.
      *
