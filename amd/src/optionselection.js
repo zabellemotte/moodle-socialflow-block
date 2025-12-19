@@ -65,7 +65,7 @@
                       sfd3.style.display = 'none';
                       sfd4.style.display = 'none';
                    }
-              });    
+              });
               sftogg3.addEventListener('click', () => {
                   if (getComputedStyle(sfd3).display != 'none') {
                       sfd3.style.display = 'none';
@@ -76,7 +76,7 @@
                       sfd3.style.display = 'block';
                       sfd4.style.display = 'none';
                    }
-              });    
+              });
               sftogg4.addEventListener('click', () => {
                   if (getComputedStyle(sfd4).display != 'none') {
                       sfd4.style.display = 'none';
