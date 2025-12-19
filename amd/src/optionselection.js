@@ -16,11 +16,10 @@
 /**
  * Class block_socialflow
  *
- * @package    block_socialflow
  * @copyright  2024  Zabelle Motte (UCLouvain)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */ 
- define(['jquery', 'block_socialflow/optionselection'], function($,myscript) {
+ */
+ define([], function() {
     return {
         init: function() {
 
@@ -66,7 +65,7 @@
                       sfd3.style.display = 'none';
                       sfd4.style.display = 'none';
                    }
-              });     
+              });    
               sftogg3.addEventListener('click', () => {
                   if (getComputedStyle(sfd3).display != 'none') {
                       sfd3.style.display = 'none';
@@ -77,7 +76,7 @@
                       sfd3.style.display = 'block';
                       sfd4.style.display = 'none';
                    }
-              });     
+              });    
               sftogg4.addEventListener('click', () => {
                   if (getComputedStyle(sfd4).display != 'none') {
                       sfd4.style.display = 'none';
@@ -90,5 +89,5 @@
                    }
               });
         }
-    }
+    };
 });
