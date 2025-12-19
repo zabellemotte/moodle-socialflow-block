@@ -122,7 +122,7 @@ This new treatement should be described in the data privacy statement.
 
 The Social Flow plugins were developed by [Isabelle Motte](https://www.uclouvain.be/fr/people/isabelle.motte) from [Université catholique de Louvain](https://www.uclouvain.be) in the context of a technical development for a career evolution. This development is presented in detail in the associated report :
 
-[Moodle Learning Analytics: how to extract log data efficiently ? Feedback on the development of social flow plugins](LINK)
+[Moodle Learning Analytics: how to extract log data efficiently ? Feedback on the development of social flow plugins](https://dial.uclouvain.be/pr/boreal/object/boreal:308602)
 
 This work is based on the [Learning Analytics Plugins](https://moodle.org/plugins/local_learning_analytics) developed by Thomas Dondorf at RWTH Aachen University in the context of his PhD dissertation:
 >Dondorf, T. (2022). Learning Analytics for Moodle: Facilitating the Adoption of Data Privacy Friendly Learning Analytics in Higher Education (Dissertation). Rheinisch-Westfälische Technische Hochschule Aachen, Aachen. https://doi.org/10.18154/RWTH-2022-04002
