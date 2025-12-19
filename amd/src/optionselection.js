@@ -34,7 +34,7 @@
             let sfd3 = document.getElementById('socialflow_itemnumselectblock');
             let sfd4 = document.getElementById('socialflow_helpblock');
             sftogg0.addEventListener('click', () => {
-                if (getComputedStyle(sfd0).display != 'none') {
+                if (getComputedStyle(sfd0).display !== 'none') {
                     sfd0.style.display = 'none';
                 } else {
                     sfd0.style.display = 'block';
@@ -42,52 +42,52 @@
                     sfd2.style.display = 'none';
                     sfd3.style.display = 'none';
                     sfd4.style.display = 'none';
-                 }
-              });
-              sftogg1.addEventListener('click', () => {
-                  if (getComputedStyle(sfd1).display != 'none') {
-                      sfd1.style.display = 'none';
-                  } else {
-                      sfd0.style.display = 'none';
-                      sfd1.style.display = 'block';
-                      sfd2.style.display = 'none';
-                      sfd3.style.display = 'none';
-                      sfd4.style.display = 'none';
-                  }
-              });
-              sftogg2.addEventListener('click', () => {
-                  if (getComputedStyle(sfd2).display != 'none') {
-                      sfd2.style.display = 'none';
-                   } else {
-                      sfd0.style.display = 'none';
-                      sfd1.style.display = 'none';
-                      sfd2.style.display = 'block';
-                      sfd3.style.display = 'none';
-                      sfd4.style.display = 'none';
-                   }
-              });
-              sftogg3.addEventListener('click', () => {
-                  if (getComputedStyle(sfd3).display != 'none') {
-                      sfd3.style.display = 'none';
-                   } else {
-                      sfd0.style.display = 'none';
-                      sfd1.style.display = 'none';
-                      sfd2.style.display = 'none';
-                      sfd3.style.display = 'block';
-                      sfd4.style.display = 'none';
-                   }
-              });
-              sftogg4.addEventListener('click', () => {
-                  if (getComputedStyle(sfd4).display != 'none') {
-                      sfd4.style.display = 'none';
-                   } else {
-                      sfd0.style.display = 'none';
-                      sfd1.style.display = 'none';
-                      sfd2.style.display = 'none';
-                      sfd3.style.display = 'none';
-                      sfd4.style.display = 'block';
-                   }
-              });
+                }
+            });
+            sftogg1.addEventListener('click', () => {
+                if (getComputedStyle(sfd1).display !== 'none') {
+                    sfd1.style.display = 'none';
+                } else {
+                    sfd0.style.display = 'none';
+                    sfd1.style.display = 'block';
+                    sfd2.style.display = 'none';
+                    sfd3.style.display = 'none';
+                    sfd4.style.display = 'none';
+                }
+            });
+            sftogg2.addEventListener('click', () => {
+                if (getComputedStyle(sfd2).display !== 'none') {
+                    sfd2.style.display = 'none';
+                } else {
+                    sfd0.style.display = 'none';
+                    sfd1.style.display = 'none';
+                    sfd2.style.display = 'block';
+                    sfd3.style.display = 'none';
+                    sfd4.style.display = 'none';
+                }
+            });
+            sftogg3.addEventListener('click', () => {
+                if (getComputedStyle(sfd3).display !== 'none') {
+                    sfd3.style.display = 'none';
+                } else {
+                    sfd0.style.display = 'none';
+                    sfd1.style.display = 'none';
+                    sfd2.style.display = 'none';
+                    sfd3.style.display = 'block';
+                    sfd4.style.display = 'none';
+                }
+            });
+            sftogg4.addEventListener('click', () => {
+                if (getComputedStyle(sfd4).display !== 'none') {
+                    sfd4.style.display = 'none';
+                } else {
+                    sfd0.style.display = 'none';
+                    sfd1.style.display = 'none';
+                    sfd2.style.display = 'none';
+                    sfd3.style.display = 'none';
+                    sfd4.style.display = 'block';
+                }
+            });
         }
     };
 });
