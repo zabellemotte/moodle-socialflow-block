@@ -153,7 +153,8 @@ class block_socialflow extends block_base {
                                          INNER JOIN {course} c ON c.id = ct.instanceid AND e.courseid = c.id
                                          INNER JOIN {role} r ON r.id = ra.roleid AND r.shortname IN " . $studentroles . "
                                          WHERE e.status = 0 AND u.suspended = 0 AND u.deleted = 0
-                                         AND (ue.timeend = 0 OR ue.timeend > " . $now . ") AND ue.status = 0 AND c.id =" . $courseid;
+                                         AND (ue.timeend = 0 OR ue.timeend > " . $now . ") 
+                                         AND ue.status = 0 AND c.id =" . $courseid;
                     $result2 = $DB->get_record_sql($sql2);
                     if (!$result2) {
                         // If there are no student in the course, there should not have actions.
@@ -602,7 +603,7 @@ class block_socialflow extends block_base {
                                 if (isset($latedate)) {
                                     if ($now < $latedatet) {
                                         $comment = "<br/><span class='socialflow_comment'>" .
-                                        get_string('limitdate', 'block_socialflow').
+                                        get_string('limitdate', 'block_socialflow') .
                                         "<br/>" . $latedate . "</span>";
                                     } else if ($now < $closingdatet) {
                                         $comment = "<br/><span class='socialflow_comment socialflow_critical'>" .
