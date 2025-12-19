@@ -133,7 +133,7 @@ class block_socialflow extends block_base {
         // If an event arises in a new couse, the number of participants is computed and stored.
         $courselistarray = [];
         $allcourses = [];
-        $studentroles = "('" . get_config('logstore_socialflow', 'tracking_roles') . "')";
+        $studentroles = get_config('logstore_socialflow', 'tracking_roles');
         if ($courses = enrol_get_my_courses()) {
             foreach ($courses as $course) {
                 $courseid = $course->id;
@@ -151,7 +151,7 @@ class block_socialflow extends block_base {
                                          INNER JOIN {role_assignments} ra ON ra.userid = u.id
                                          INNER JOIN {context} ct ON ct.id = ra.contextid AND ct.contextlevel = 50
                                          INNER JOIN {course} c ON c.id = ct.instanceid AND e.courseid = c.id
-                                         INNER JOIN {role} r ON r.id = ra.roleid AND r.shortname IN " . $studentroles . "
+                                         INNER JOIN {role} r ON r.id = ra.roleid AND r.shortname IN ('" . $studentroles . "')
                                          WHERE e.status = 0 AND u.suspended = 0 AND u.deleted = 0
                                          AND (ue.timeend = 0 OR ue.timeend > " . $now . ")
                                          AND ue.status = 0 AND c.id =" . $courseid;
