@@ -69,4 +69,3 @@ $string['value1'] = '14';
 $string['value2'] = '7';
 $string['value3'] = '3';
 $string['value4'] = '1';
-
