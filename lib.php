@@ -37,7 +37,7 @@ function block_socialflow_user_preferences(): array {
         'default' => 14,
         'type' => PARAM_INT,
         'choices' => [14, 7, 3, 1],
-        'permissioncallback' => function($userid) {
+        'permissioncallback' => function ($userid) {
             return $userid == $GLOBALS['USER']->id;
         },
     ];
@@ -46,7 +46,7 @@ function block_socialflow_user_preferences(): array {
         'null' => NULL_ALLOWED,
         'default' => null,
         'type' => PARAM_RAW,
-        'permissioncallback' => function($userid) {
+        'permissioncallback' => function ($userid) {
             return $userid == $GLOBALS['USER']->id;
         },
     ];
@@ -56,7 +56,7 @@ function block_socialflow_user_preferences(): array {
         'default' => 'both',
         'type' => PARAM_ALPHA,
         'choices' => ['consult', 'contrib', 'both'],
-        'permissioncallback' => function($userid) {
+        'permissioncallback' => function ($userid) {
             return $userid == $GLOBALS['USER']->id;
         },
     ];
