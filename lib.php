@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Library functions for overview.
+ * Library functions for the socialflow block.
  *
  * @package   block_socialflow
  * @copyright 2024 Zabelle Motte (UCLouvain)
@@ -24,19 +24,31 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+/**
+ * Returns the user preferences for the socialflow block.
+ *
+ * @return array
+ */
+function block_socialflow_user_preferences(): array {
+    $preferences = [];
+
     $preferences['socialflow_optionchoice'] = [
         'null' => NULL_NOT_ALLOWED,
         'default' => 14,
-        'type' => PARAM_ALPHA,
+        'type' => PARAM_INT,
         'choices' => [14, 7, 3, 1],
-        'permissioncallback' => [core_user::class, 'is_current_user'],
+        'permissioncallback' => function($userid) {
+            return $userid == $GLOBALS['USER']->id;
+        },
     ];
 
     $preferences['socialflow_courseschoice'] = [
         'null' => NULL_ALLOWED,
         'default' => null,
         'type' => PARAM_RAW,
-        'permissioncallback' => [core_user::class, 'is_current_user'],
+        'permissioncallback' => function($userid) {
+            return $userid == $GLOBALS['USER']->id;
+        },
     ];
 
     $preferences['socialflow_typechoice'] = [
@@ -44,7 +56,10 @@ defined('MOODLE_INTERNAL') || die();
         'default' => 'both',
         'type' => PARAM_ALPHA,
         'choices' => ['consult', 'contrib', 'both'],
-        'permissioncallback' => [core_user::class, 'is_current_user'],
+        'permissioncallback' => function($userid) {
+            return $userid == $GLOBALS['USER']->id;
+        },
     ];
 
     return $preferences;
+}
