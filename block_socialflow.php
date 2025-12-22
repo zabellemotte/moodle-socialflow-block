@@ -98,7 +98,7 @@ class block_socialflow extends block_base {
         // Get list of choosen options.
         $currentchoice = optional_param('socialflow_optionchoice', null, PARAM_INT);
         if ($currentchoice !== null && confirm_sesskey()) {
-           set_user_preference('socialflow_optionchoice', $currentchoice);
+            set_user_preference('socialflow_optionchoice', $currentchoice);
         } else if ($saved = get_user_preferences('socialflow_optionchoice', null)) {
             $currentchoice = $saved;
         } else {
@@ -110,7 +110,7 @@ class block_socialflow extends block_base {
         if ($currenttype !== null) {
             set_user_preference('socialflow_typechoice', $currenttype);
         } else {
-           $currenttype = get_user_preferences('socialflow_typechoice', 'both');
+            $currenttype = get_user_preferences('socialflow_typechoice', 'both');
         }
 
         // Get items number choice.
@@ -118,7 +118,7 @@ class block_socialflow extends block_base {
         if ($currentitemnum !== null) {
             set_user_preference('socialflow_itemnumchoice', $currentitemnum);
         } else {
-           $currentitemnum = get_user_preferences('socialflow_itemnumchoice', 10);
+            $currentitemnum = get_user_preferences('socialflow_itemnumchoice', 10);
         }
 
         // Build user courses lists with shortnames and numbrer of active enrolled students.
@@ -140,8 +140,8 @@ class block_socialflow extends block_base {
                 $result1 = $DB->get_record_sql($sql1, ['courseid' => $courseid]);
                 // If number of participants is not stored in nbpa table, it is computed and stored.
                 if (!$result1) {
-                    $studentrolesarray = explode(',', $studentroles); // si $studentroles = 'student,learner'
-                    list($roleinsql, $roleparams) = $DB->get_in_or_equal($studentrolesarray, SQL_PARAMS_NAMED);
+                    $studentrolesarray = explode(',', $studentroles);
+                    [$roleinsql, $roleparams] = $DB->get_in_or_equal($studentrolesarray, SQL_PARAMS_NAMED);
                     $sql2 = "SELECT COUNT(DISTINCT(u.id)) AS nbpa
                               FROM {user} u
                              INNER JOIN {user_enrolments} ue ON ue.userid = u.id
@@ -155,7 +155,7 @@ class block_socialflow extends block_base {
                                AND ue.status = 0 AND c.id = :courseid";
                     $params2 = array_merge($roleparams, [
                         'now' => $now,
-                        'courseid' => $courseid
+                        'courseid' => $courseid,
                     ]);
                     $result2 = $DB->get_record_sql($sql2, $params2);
                     if (!$result2) {
@@ -192,7 +192,7 @@ class block_socialflow extends block_base {
         // 1. Try to get the course list from the request (comma-separated list).
         $currentcourses = optional_param_array(
             'socialflow_courseschoice',
-             null,
+            null,
             PARAM_INT
         );
         if ($currentcourses !== null) {
@@ -222,7 +222,7 @@ class block_socialflow extends block_base {
             foreach ($allcurrentcourses as $courseid) {
                 $course = $DB->get_record('course', ['id' => $courseid], 'id, visible', IGNORE_MISSING);
                 if ($course && $course->visible) {
-                $currentcourses[] = $courseid;
+                    $currentcourses[] = $courseid;
                 }
             }
 
@@ -230,8 +230,8 @@ class block_socialflow extends block_base {
             if (empty($currentcourses)) {
                 $this->content = new stdClass();
                 $this->content->text = html_writer::div(
-                   get_string('nodata', 'block_socialflow'),
-                   'socialflow_error'
+                    get_string('nodata', 'block_socialflow'),
+                    'socialflow_error'
                 );
                 return $this->content;
             }
@@ -291,7 +291,7 @@ class block_socialflow extends block_base {
         $this->content->text .= html_writer::empty_tag('input', [
            'type'  => 'hidden',
            'name'  => 'sesskey',
-           'value' => sesskey()
+           'value' => sesskey(),
         ]);
         // Radio boxes with list of options.
         for ($i = 0; $i < count($options); $i++) {
@@ -320,9 +320,9 @@ class block_socialflow extends block_base {
         $this->content->text .= html_writer::empty_tag('input', [
            'type'  => 'hidden',
            'name'  => 'sesskey',
-           'value' => sesskey()
+           'value' => sesskey(),
         ]);
-  
+
         // Checkboxes with list of courses.
         foreach ($courses as $course) {
             $courseid = $course->id;
@@ -350,9 +350,9 @@ class block_socialflow extends block_base {
         $this->content->text .= html_writer::empty_tag('input', [
            'type'  => 'hidden',
            'name'  => 'sesskey',
-           'value' => sesskey()
+           'value' => sesskey(),
         ]);
-  
+
         // Radio boxes with list of options.
         for ($i = 0; $i < count($types); $i++) {
             if ($tvalues[$i] == $currenttype) {
@@ -380,9 +380,9 @@ class block_socialflow extends block_base {
         $this->content->text .= html_writer::empty_tag('input', [
            'type'  => 'hidden',
            'name'  => 'sesskey',
-           'value' => sesskey()
+           'value' => sesskey(),
         ]);
-  
+
         // Radio boxes with list of options.
         for ($i = 0; $i < count($itemnums); $i++) {
             if ($itemnums[$i] == $currentitemnum) {
@@ -444,10 +444,10 @@ class block_socialflow extends block_base {
 
         $dbtype = $CFG->dbtype;
 
-        // Prepare the courses array and placeholder for the IN() clause
-        list($courseinsql, $courseparams) = $DB->get_in_or_equal($currentcourses, SQL_PARAMS_NAMED);
+        // Prepare the courses array and placeholder for the IN() clause.
+        [$courseinsql, $courseparams] = $DB->get_in_or_equal($currentcourses, SQL_PARAMS_NAMED);
 
-        // Prepare the dynamic CASE WHEN for nbpa division with placeholders
+        // Prepare the dynamic CASE WHEN for nbpa division with placeholders.
         $casewhens = [];
         $caseparams = [];
         foreach ($currentcourses as $i => $id) {
@@ -457,7 +457,7 @@ class block_socialflow extends block_base {
             $caseparams[$caseparam] = $coursenbpa[$id];
         }
 
-        // Base SQL query using placeholders
+        // Base SQL query using placeholders.
         $sql = "
              WITH event_hits AS (
            SELECT h.id, h.courseid, h.contextid, h.eventid, h.nbhits, h.userids
@@ -490,54 +490,54 @@ class block_socialflow extends block_base {
            WHERE cm.visible = 1 AND cs.visible = 1
         ";
 
-        // Merge parameters for placeholders
+        // Merge parameters for placeholders.
         $params = array_merge($courseparams, $caseparams, [
             'loglifetime' => $loglifetime,
-            'now' => $now
+            'now' => $now,
         ]);
 
-        // Add optional filter by event type
+        // Add optional filter by event type.
         if ($currenttype != 'both') {
             $sql .= " AND evts.actiontype = :currenttype";
             $params['currenttype'] = $currenttype;
         }
 
-        // Add limit/offset depending on the DB type
+        // Add limit/offset depending on the DB type.
         switch ($dbtype) {
             case 'mariadb':
-                $limit = (int)$currentitemnum; // cast to integer to avoid injection
-                $sql .= " ORDER BY freq DESC LIMIT $limit"; 
+                $limit = (int)$currentitemnum; // Cast to integer to avoid injection.
+                $sql .= " ORDER BY freq DESC LIMIT $limit";
                 break;
             case 'mysqli':
-                $limit = (int)$currentitemnum; // cast to integer to avoid injection
-                $sql .= " ORDER BY freq DESC LIMIT $limit"; 
+                $limit = (int)$currentitemnum; // Cast to integer to avoid injection.
+                $sql .= " ORDER BY freq DESC LIMIT $limit";
                 break;
             case 'sqlite':
-                 $limit = (int)$currentitemnum; // cast to integer to avoid injection
-                $sql .= " ORDER BY freq DESC LIMIT $limit"; 
+                 $limit = (int)$currentitemnum; // Cast to integer to avoid injection.
+                $sql .= " ORDER BY freq DESC LIMIT $limit";
                 break;
             case 'pgsql':
-                $limit = (int)$currentitemnum; // cast to integer to avoid injection
-                $sql .= " ORDER BY freq DESC LIMIT $limit"; 
+                $limit = (int)$currentitemnum; // Cast to integer to avoid injection.
+                $sql .= " ORDER BY freq DESC LIMIT $limit";
                 break;
             case 'sqlsrv':
                 $sql .= " ORDER BY freq DESC OFFSET 0 ROWS FETCH NEXT :limit ROWS ONLY";
                 $params['limit'] = $currentitemnum;
                 break;
             case 'oci':
-                // For Oracle, the SQL is more complex, but placeholders can be used similarly
-                // Oracle requires ROW_NUMBER() to implement LIMIT
-                // Prepare the dynamic CASE WHEN for nbpa division
-                $casewhens_oci = [];
-                $caseparams_oci = [];
+                // For Oracle, the SQL is more complex, but placeholders can be used similarly.
+                // Oracle requires ROW_NUMBER() to implement LIMIT.
+                // Prepare the dynamic CASE WHEN for nbpa division.
+                $casewhensoci = [];
+                $caseparamsoci = [];
                 foreach ($currentcourses as $i => $id) {
                     $caseparam = "nbpa$i";
-                    $casewhens_oci[] = "WHEN ei.courseid = :courseid$i THEN ei.nbhits / :$caseparam";
-                    $caseparams_oci["courseid$i"] = $id;
-                    $caseparams_oci[$caseparam] = $coursenbpa[$id];
+                    $casewhensoci[] = "WHEN ei.courseid = :courseid$i THEN ei.nbhits / :$caseparam";
+                    $caseparamsoci["courseid$i"] = $id;
+                    $caseparamsoci[$caseparam] = $coursenbpa[$id];
                 }
 
-                // Build Oracle-specific query
+                // Build Oracle-specific query.
                 $sql = "
                     SELECT * FROM (
                         SELECT ei.id AS hitid,
@@ -553,8 +553,8 @@ class block_socialflow extends block_base {
                                cm.instance,
                                m.name,
                                ei.userids,
-                               CASE " . implode(" ", $casewhens_oci) . " END AS freq,
-                               ROW_NUMBER() OVER (ORDER BY CASE " . implode(" ", $casewhens_oci) . " END DESC) AS rownum
+                               CASE " . implode(" ", $casewhensoci) . " END AS freq,
+                               ROW_NUMBER() OVER (ORDER BY CASE " . implode(" ", $casewhensoci) . " END DESC) AS rownum
                          FROM {logstore_socialflow_hits} ei
                          INNER JOIN {logstore_socialflow_closing} ccl ON ei.id = ccl.hitid
                          INNER JOIN {logstore_socialflow_evts} evts ON ei.eventid = evts.id
@@ -569,27 +569,27 @@ class block_socialflow extends block_base {
                            AND cs.visible = 1
                 ";
 
-                // Optional filter for event type
+                // Optional filter for event type.
                 if ($currenttype != 'both') {
-                $sql .= " AND evts.actiontype = :currenttype";
-                    $caseparams_oci['currenttype'] = $currenttype;
+                    $sql .= " AND evts.actiontype = :currenttype";
+                        $caseparamsoci['currenttype'] = $currenttype;
                 }
 
-                // Close the outer query to apply the row limit
+                // Close the outer query to apply the row limit.
                 $sql .= ") WHERE rownum <= :limit";
-                    $caseparams_oci['limit'] = $currentitemnum;
+                    $caseparamsoci['limit'] = $currentitemnum;
 
-                // Merge all parameters
-                $params = array_merge($courseparams, $caseparams_oci, [
+                // Merge all parameters.
+                $params = array_merge($courseparams, $caseparamsoci, [
                    'loglifetime' => $loglifetime,
-                   'now' => $now
+                   'now' => $now,
                 ]);
                 break;
             default:
-               throw new Exception("Unsupported DB type: " . $dbtype);
+            throw new Exception("Unsupported DB type: " . $dbtype);
         }
 
-        // Execute the secure recordset query
+        // Execute the secure recordset query.
         $result = $DB->get_recordset_sql($sql, $params);
 
         /**************************************
@@ -663,7 +663,7 @@ class block_socialflow extends block_base {
                                          WHERE timecreated > :lastruntimet
                                     )
                                     SELECT COUNT(id) AS nbdone
-                                      FROM recent_log 
+                                      FROM recent_log
                                      WHERE courseid = :courseid
                                        AND contextid = :contextid
                                        AND eventid = :eventid
@@ -675,7 +675,7 @@ class block_socialflow extends block_base {
                                    'courseid' => $courseid,
                                    'contextid' => $contextid,
                                    'eventid' => $eventid,
-                                   'userid' => $cuserid
+                                   'userid' => $cuserid,
                                 ];
 
                                 $result53 = $DB->get_record_sql($sql53, $params);
