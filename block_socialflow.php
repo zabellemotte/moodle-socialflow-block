@@ -96,33 +96,29 @@ class block_socialflow extends block_base {
         $itemnums = [5, 10, 15, 20, 30, 50, 100];
 
         // Get list of choosen options.
-        if (isset($_POST['socialflow_optionchoice'])) {
-            $currentchoice = $_POST['socialflow_optionchoice'];
-            set_user_preference('socialflow_optionchoice', $currentchoice);
-        } else if (!is_null(get_user_preferences('socialflow_optionchoice'))) {
-            $currentchoice = get_user_preferences('socialflow_optionchoice');
+        $currentchoice = optional_param('socialflow_optionchoice', null, PARAM_INT);
+        if ($currentchoice !== null && confirm_sesskey()) {
+           set_user_preference('socialflow_optionchoice', $currentchoice);
+        } else if ($saved = get_user_preferences('socialflow_optionchoice', null)) {
+            $currentchoice = $saved;
         } else {
             $currentchoice = 14;
         }
 
         // Get list of choosen type.
-        if (isset($_POST['socialflow_typechoice'])) {
-            $currenttype = $_POST['socialflow_typechoice'];
+        $currenttype = optional_param('socialflow_typechoice', null, PARAM_ALPHA);
+        if ($currenttype !== null) {
             set_user_preference('socialflow_typechoice', $currenttype);
-        } else if (!is_null(get_user_preferences('socialflow_typechoice'))) {
-            $currenttype = get_user_preferences('socialflow_typechoice');
         } else {
-            $currenttype = 'both';
+           $currenttype = get_user_preferences('socialflow_typechoice', 'both');
         }
 
         // Get items number choice.
-        if (isset($_POST['socialflow_itemnumchoice'])) {
-            $currentitemnum = $_POST['socialflow_itemnumchoice'];
+        $currentitemnum = optional_param('socialflow_itemnumchoice', null, PARAM_INT);
+        if ($currentitemnum !== null) {
             set_user_preference('socialflow_itemnumchoice', $currentitemnum);
-        } else if (!is_null(get_user_preferences('socialflow_itemnumchoice'))) {
-            $currentitemnum = get_user_preferences('socialflow_itemnumchoice');
         } else {
-            $currentitemnum = '10';
+           $currentitemnum = get_user_preferences('socialflow_itemnumchoice', 10);
         }
 
         // Build user courses lists with shortnames and numbrer of active enrolled students.
@@ -140,22 +136,28 @@ class block_socialflow extends block_base {
                 $courseshortname = $course->shortname;
                 $courselistarray[$courseid] = $courseshortname;
                 $now = time();
-                $sql1 = "SELECT nbpa FROM {logstore_socialflow_nbpa} WHERE courseid=" . $courseid;
-                $result1 = $DB->get_record_sql($sql1);
+                $sql1 = "SELECT nbpa FROM {logstore_socialflow_nbpa} WHERE courseid = :courseid";
+                $result1 = $DB->get_record_sql($sql1, ['courseid' => $courseid]);
                 // If number of participants is not stored in nbpa table, it is computed and stored.
                 if (!$result1) {
+                    $studentrolesarray = explode(',', $studentroles); // si $studentroles = 'student,learner'
+                    list($roleinsql, $roleparams) = $DB->get_in_or_equal($studentrolesarray, SQL_PARAMS_NAMED);
                     $sql2 = "SELECT COUNT(DISTINCT(u.id)) AS nbpa
-                                         FROM {user} u
-                                         INNER JOIN {user_enrolments} ue ON ue.userid = u.id
-                                         INNER JOIN {enrol} e ON e.id = ue.enrolid
-                                         INNER JOIN {role_assignments} ra ON ra.userid = u.id
-                                         INNER JOIN {context} ct ON ct.id = ra.contextid AND ct.contextlevel = 50
-                                         INNER JOIN {course} c ON c.id = ct.instanceid AND e.courseid = c.id
-                                         INNER JOIN {role} r ON r.id = ra.roleid AND r.shortname IN ('" . $studentroles . "')
-                                         WHERE e.status = 0 AND u.suspended = 0 AND u.deleted = 0
-                                         AND (ue.timeend = 0 OR ue.timeend > " . $now . ")
-                                         AND ue.status = 0 AND c.id =" . $courseid;
-                    $result2 = $DB->get_record_sql($sql2);
+                              FROM {user} u
+                             INNER JOIN {user_enrolments} ue ON ue.userid = u.id
+                             INNER JOIN {enrol} e ON e.id = ue.enrolid
+                             INNER JOIN {role_assignments} ra ON ra.userid = u.id
+                             INNER JOIN {context} ct ON ct.id = ra.contextid AND ct.contextlevel = 50
+                             INNER JOIN {course} c ON c.id = ct.instanceid AND e.courseid = c.id
+                             INNER JOIN {role} r ON r.id = ra.roleid AND r.shortname $roleinsql
+                             WHERE e.status = 0 AND u.suspended = 0 AND u.deleted = 0
+                               AND (ue.timeend = 0 OR ue.timeend > :now)
+                               AND ue.status = 0 AND c.id = :courseid";
+                    $params2 = array_merge($roleparams, [
+                        'now' => $now,
+                        'courseid' => $courseid
+                    ]);
+                    $result2 = $DB->get_record_sql($sql2, $params2);
                     if (!$result2) {
                         // If there are no student in the course, there should not have actions.
                         // But this ensures no error occures.
@@ -187,31 +189,57 @@ class block_socialflow extends block_base {
         }
 
         // Get list of choosen courses or select all.
-        if (isset($_POST['socialflow_courseschoice'])) {
-            $currentcourses = $_POST['socialflow_courseschoice'];
-            $currentcoursesstring = implode(',', $currentcourses);
-            set_user_preference('socialflow_courseschoice', $currentcoursesstring);
-        } else if (!is_null(get_user_preferences('socialflow_courseschoice'))) {
-            $currentcoursesstring = get_user_preferences('socialflow_courseschoice');
-            $allcurrentcourses = explode(',', $currentcoursesstring);
+        // 1. Try to get the course list from the request (comma-separated list).
+        $currentcourses = optional_param_array(
+            'socialflow_courseschoice',
+             null,
+            PARAM_INT
+        );
+        if ($currentcourses !== null) {
+            // Store as comma-separated string.
+            $coursestr = implode(',', $currentcourses);
+            set_user_preference('socialflow_courseschoice', $coursestr);
+        } else {
+            $coursestr = get_user_preferences('socialflow_courseschoice', '');
+            $currentcourses = $coursestr !== ''
+                ? array_map('intval', explode(',', $coursestr))
+                : [];
+        }
+        if ($coursestr !== null) {
+            // Save user preference.
+            set_user_preference('socialflow_courseschoice', $coursestr);
+        } else {
+            // Otherwise, load from user preferences.
+            $coursestr = get_user_preferences('socialflow_courseschoice', null);
+        }
+
+        if ($coursestr !== null && $coursestr !== '') {
+            // Convert string to array of course IDs.
+            $allcurrentcourses = array_map('intval', explode(',', $coursestr));
             $currentcourses = [];
-            // Exclude hidden courses from current courses.
+
+            // Exclude hidden courses.
             foreach ($allcurrentcourses as $courseid) {
-                $course = $DB->get_record('course', ['id' => $courseid], 'id, visible');
+                $course = $DB->get_record('course', ['id' => $courseid], 'id, visible', IGNORE_MISSING);
                 if ($course && $course->visible) {
-                    // Add the course to the list of visible courses.
-                    $currentcourses[] = $courseid;
+                $currentcourses[] = $courseid;
                 }
             }
-            if ($currentcourses == []) {
+
+            // No visible courses left.
+            if (empty($currentcourses)) {
                 $this->content = new stdClass();
-                $this->content->text = "<div class='socialflow_error'> " . get_string('nodata', 'block_socialflow') . '<div>';
+                $this->content->text = html_writer::div(
+                   get_string('nodata', 'block_socialflow'),
+                   'socialflow_error'
+                );
                 return $this->content;
             }
         } else {
+            // Fallback: use all courses.
             $currentcourses = $allcourses;
-            $currentcoursesstring = implode(',', $currentcourses);
-        };
+            $coursestr = implode(',', $currentcourses);
+        }
 
         /***********************************************************
          *          DISPLAY FILTER OPTIONS AND BUTTONS             *
@@ -260,6 +288,11 @@ class block_socialflow extends block_base {
         'id' => 'socialflow_optionselectblock']);
         $this->content->text .= html_writer::start_tag('form', ['action' => '', 'method' => 'post',
         'class' => 'socialflow_optionselectform']);
+        $this->content->text .= html_writer::empty_tag('input', [
+           'type'  => 'hidden',
+           'name'  => 'sesskey',
+           'value' => sesskey()
+        ]);
         // Radio boxes with list of options.
         for ($i = 0; $i < count($options); $i++) {
             if ($values[$i] == $currentchoice) {
@@ -284,6 +317,12 @@ class block_socialflow extends block_base {
         'id' => 'socialflow_courseselectblock']);
         $this->content->text .= html_writer::start_tag('form', ['action' => '', 'method' => 'post',
         'class' => 'socialflow_courseselectform']);
+        $this->content->text .= html_writer::empty_tag('input', [
+           'type'  => 'hidden',
+           'name'  => 'sesskey',
+           'value' => sesskey()
+        ]);
+  
         // Checkboxes with list of courses.
         foreach ($courses as $course) {
             $courseid = $course->id;
@@ -308,6 +347,12 @@ class block_socialflow extends block_base {
         'id' => 'socialflow_typeselectblock']);
         $this->content->text .= html_writer::start_tag('form', ['action' => '', 'method' => 'post',
         'class' => 'socialflow_typeselectform']);
+        $this->content->text .= html_writer::empty_tag('input', [
+           'type'  => 'hidden',
+           'name'  => 'sesskey',
+           'value' => sesskey()
+        ]);
+  
         // Radio boxes with list of options.
         for ($i = 0; $i < count($types); $i++) {
             if ($tvalues[$i] == $currenttype) {
@@ -332,6 +377,12 @@ class block_socialflow extends block_base {
         'id' => 'socialflow_itemnumselectblock']);
         $this->content->text .= html_writer::start_tag('form', ['action' => '', 'method' => 'post',
         'class' => 'socialflow_itemnumselectform']);
+        $this->content->text .= html_writer::empty_tag('input', [
+           'type'  => 'hidden',
+           'name'  => 'sesskey',
+           'value' => sesskey()
+        ]);
+  
         // Radio boxes with list of options.
         for ($i = 0; $i < count($itemnums); $i++) {
             if ($itemnums[$i] == $currentitemnum) {
@@ -393,81 +444,153 @@ class block_socialflow extends block_base {
 
         $dbtype = $CFG->dbtype;
 
-        $sql = "WITH event_hits AS (
-                         SELECT h.id, h.courseid, h.contextid, h.eventid, h.nbhits, h.userids
-                         FROM {logstore_socialflow_hits} h
-                         INNER JOIN {logstore_socialflow_closing} c ON h.id = c.hitid
-                         WHERE h.courseid IN (" . $currentcoursesstring . ") AND h.lasttime > "
-                         . $loglifetime . " AND c.closingdate > (" . $now . " + 172800)
-                     )
-                     SELECT ei.id AS hitid, ei.contextid, ei.eventid, ei.courseid, evts.actiontype, evts.moduletable,
-                     evts.hasclosingdate, evts.haslatesubmit, evts.latedatefield, c.instanceid, cm.instance, m.name, ei.userids,
-                     CASE ";
+        // Prepare the courses array and placeholder for the IN() clause
+        list($courseinsql, $courseparams) = $DB->get_in_or_equal($currentcourses, SQL_PARAMS_NAMED);
 
-        foreach ($currentcourses as $id) {
-            $nbpa = $coursenbpa[$id];
-            $sql .= "WHEN ei.courseid = " . $id . " THEN ei.nbhits / " . $nbpa . " ";
+        // Prepare the dynamic CASE WHEN for nbpa division with placeholders
+        $casewhens = [];
+        $caseparams = [];
+        foreach ($currentcourses as $i => $id) {
+            $caseparam = "nbpa$i";
+            $casewhens[] = "WHEN ei.courseid = :courseid$i THEN ei.nbhits / :$caseparam";
+            $caseparams["courseid$i"] = $id;
+            $caseparams[$caseparam] = $coursenbpa[$id];
         }
-        $sql .= "END AS freq
-                    FROM event_hits ei
-                    INNER JOIN {logstore_socialflow_evts} evts ON ei.eventid = evts.id
-                    INNER JOIN {context} c ON ei.contextid = c.id
-                    INNER JOIN {course_modules} cm ON c.instanceid = cm.id
-                    INNER JOIN {course_sections} cs ON cm.section = cs.id
-                    INNER JOIN {modules} m ON cm.module = m.id
-                    WHERE cm.visible = 1 AND cs.visible = 1 ";
 
+        // Base SQL query using placeholders
+        $sql = "
+             WITH event_hits AS (
+           SELECT h.id, h.courseid, h.contextid, h.eventid, h.nbhits, h.userids
+             FROM {logstore_socialflow_hits} h
+            INNER JOIN {logstore_socialflow_closing} c ON h.id = c.hitid
+            WHERE h.courseid $courseinsql
+              AND h.lasttime > :loglifetime
+              AND c.closingdate > (:now + 172800)
+           )
+           SELECT ei.id AS hitid,
+                  ei.contextid,
+                  ei.eventid,
+                  ei.courseid,
+                  evts.actiontype,
+                  evts.moduletable,
+                  evts.hasclosingdate,
+                  evts.haslatesubmit,
+                  evts.latedatefield,
+                  c.instanceid,
+                  cm.instance,
+                  m.name,
+                  ei.userids,
+           CASE " . implode(" ", $casewhens) . " END AS freq
+           FROM event_hits ei
+           INNER JOIN {logstore_socialflow_evts} evts ON ei.eventid = evts.id
+           INNER JOIN {context} c ON ei.contextid = c.id
+           INNER JOIN {course_modules} cm ON c.instanceid = cm.id
+           INNER JOIN {course_sections} cs ON cm.section = cs.id
+           INNER JOIN {modules} m ON cm.module = m.id
+           WHERE cm.visible = 1 AND cs.visible = 1
+        ";
+
+        // Merge parameters for placeholders
+        $params = array_merge($courseparams, $caseparams, [
+            'loglifetime' => $loglifetime,
+            'now' => $now
+        ]);
+
+        // Add optional filter by event type
         if ($currenttype != 'both') {
-            $sql .= "AND evts.actiontype = '" . $currenttype . "' ";
+            $sql .= " AND evts.actiontype = :currenttype";
+            $params['currenttype'] = $currenttype;
         }
 
-        // Hit query depend on the SGBD, thanks to Chatgpt for conversion !
+        // Add limit/offset depending on the DB type
         switch ($dbtype) {
             case 'mariadb':
-                $sql .= "ORDER BY freq DESC LIMIT " . $currentitemnum . ";";
+                $limit = (int)$currentitemnum; // cast to integer to avoid injection
+                $sql .= " ORDER BY freq DESC LIMIT $limit"; 
                 break;
             case 'mysqli':
-                $sql .= "ORDER BY freq DESC LIMIT " . $currentitemnum . ";";
-                break;
-            case 'pgsql':
-                $sql .= "ORDER BY freq DESC LIMIT " . $currentitemnum . ";";
-                break;
-            case 'sqlsrv':
-                $sql .= "ORDER BY freq DESC OFFSET 0 ROWS FETCH NEXT " . $currentitemnum . " ROWS ONLY;";
-                break;
-            case 'oci':
-                $sql = "SELECT * FROM (
-                                SELECT ei.id AS hitid, ei.contextid, ei.eventid, ei.courseid, evts.actiontype, evts.moduletable,
-                                evts.hasclosingdate, evts.haslatesubmit, evts.latedatefield, c.instanceid, cm.instance, m.name,
-                                ei.userids,
-                                CASE ";
-                foreach ($currentcourses as $id) {
-                    $nbpa = $coursenbpa[$id];
-                    $sql .= "WHEN ei.courseid = " . $id . " THEN ei.nbhits / " . $nbpa . " ";
-                }
-                $sql .= "END AS freq,
-                                 ROW_NUMBER() OVER (ORDER BY freq DESC) AS rownum
-                                 FROM event_hits ei
-                                 INNER JOIN {logstore_socialflow_evts} evts ON ei.eventid = evts.id
-                                 INNER JOIN {context} c ON ei.contextid = c.id
-                                 INNER JOIN {course_modules} cm ON c.instanceid = cm.id
-                                 INNER JOIN {course_sections} cs ON cm.section = cs.id
-                                 INNER JOIN {modules} m ON cm.module = m.id
-                                 WHERE cm.visible = 1 AND cs.visible = 1 ";
-                if ($currenttype != 'both') {
-                    $sql .= "AND evts.actiontype = '" . $currenttype . "' ";
-                }
-                $sql .= ") WHERE rownum <= " . $currentitemnum . ";";
+                $limit = (int)$currentitemnum; // cast to integer to avoid injection
+                $sql .= " ORDER BY freq DESC LIMIT $limit"; 
                 break;
             case 'sqlite':
-                $sql .= "ORDER BY freq DESC LIMIT " . $currentitemnum . ";";
+                 $limit = (int)$currentitemnum; // cast to integer to avoid injection
+                $sql .= " ORDER BY freq DESC LIMIT $limit"; 
+                break;
+            case 'pgsql':
+                $limit = (int)$currentitemnum; // cast to integer to avoid injection
+                $sql .= " ORDER BY freq DESC LIMIT $limit"; 
+                break;
+            case 'sqlsrv':
+                $sql .= " ORDER BY freq DESC OFFSET 0 ROWS FETCH NEXT :limit ROWS ONLY";
+                $params['limit'] = $currentitemnum;
+                break;
+            case 'oci':
+                // For Oracle, the SQL is more complex, but placeholders can be used similarly
+                // Oracle requires ROW_NUMBER() to implement LIMIT
+                // Prepare the dynamic CASE WHEN for nbpa division
+                $casewhens_oci = [];
+                $caseparams_oci = [];
+                foreach ($currentcourses as $i => $id) {
+                    $caseparam = "nbpa$i";
+                    $casewhens_oci[] = "WHEN ei.courseid = :courseid$i THEN ei.nbhits / :$caseparam";
+                    $caseparams_oci["courseid$i"] = $id;
+                    $caseparams_oci[$caseparam] = $coursenbpa[$id];
+                }
+
+                // Build Oracle-specific query
+                $sql = "
+                    SELECT * FROM (
+                        SELECT ei.id AS hitid,
+                               ei.contextid,
+                               ei.eventid,
+                               ei.courseid,
+                               evts.actiontype,
+                               evts.moduletable,
+                               evts.hasclosingdate,
+                               evts.haslatesubmit,
+                               evts.latedatefield,
+                               c.instanceid,
+                               cm.instance,
+                               m.name,
+                               ei.userids,
+                               CASE " . implode(" ", $casewhens_oci) . " END AS freq,
+                               ROW_NUMBER() OVER (ORDER BY CASE " . implode(" ", $casewhens_oci) . " END DESC) AS rownum
+                         FROM {logstore_socialflow_hits} ei
+                         INNER JOIN {logstore_socialflow_closing} ccl ON ei.id = ccl.hitid
+                         INNER JOIN {logstore_socialflow_evts} evts ON ei.eventid = evts.id
+                         INNER JOIN {context} c ON ei.contextid = c.id
+                         INNER JOIN {course_modules} cm ON c.instanceid = cm.id
+                         INNER JOIN {course_sections} cs ON cm.section = cs.id
+                         INNER JOIN {modules} m ON cm.module = m.id
+                         WHERE ei.courseid $courseinsql
+                           AND ei.lasttime > :loglifetime
+                           AND ccl.closingdate > (:now + 172800)
+                           AND cm.visible = 1
+                           AND cs.visible = 1
+                ";
+
+                // Optional filter for event type
+                if ($currenttype != 'both') {
+                $sql .= " AND evts.actiontype = :currenttype";
+                    $caseparams_oci['currenttype'] = $currenttype;
+                }
+
+                // Close the outer query to apply the row limit
+                $sql .= ") WHERE rownum <= :limit";
+                    $caseparams_oci['limit'] = $currentitemnum;
+
+                // Merge all parameters
+                $params = array_merge($courseparams, $caseparams_oci, [
+                   'loglifetime' => $loglifetime,
+                   'now' => $now
+                ]);
                 break;
             default:
-                throw new Exception("Unsupported SGBD: " . $dbtype);
+               throw new Exception("Unsupported DB type: " . $dbtype);
         }
-        // Display the $sql variable to discover the beautiful socialflow query !
-        // Add this command on a new line : $this->content->text.="<div> $sql </div>";.
-        $result = $DB->get_recordset_sql($sql); // See https://moodle.org/mod/forum/discuss.php?d=60818.
+
+        // Execute the secure recordset query
+        $result = $DB->get_recordset_sql($sql, $params);
 
         /**************************************
          *   DISPLAY SOCIAL FLOW DATA         *
@@ -534,15 +657,28 @@ class block_socialflow extends block_base {
                             $result52 = $DB->get_record_sql($sql52);
                             if ($result52) {
                                 $lastruntimet = $result52->lastruntime;
-                                $sql53 = "WITH recent_log AS (SELECT * FROM {logstore_socialflow_log}
-                                               WHERE timecreated>$lastruntimet)
-                                               SELECT COUNT(id) AS nbdone
-                                               FROM recent_log
-                                               WHERE courseid=$courseid
-                                               AND contextid=$contextid
-                                               AND eventid=$eventid
-                                               AND userid=$cuserid";
-                                $result53 = $DB->get_record_sql($sql53);
+                                $sql53 = "
+                                    WITH recent_log AS (
+                                        SELECT * FROM {logstore_socialflow_log}
+                                         WHERE timecreated > :lastruntimet
+                                    )
+                                    SELECT COUNT(id) AS nbdone
+                                      FROM recent_log 
+                                     WHERE courseid = :courseid
+                                       AND contextid = :contextid
+                                       AND eventid = :eventid
+                                       AND userid = :userid
+                                ";
+
+                                $params = [
+                                   'lastruntimet' => $lastruntimet,
+                                   'courseid' => $courseid,
+                                   'contextid' => $contextid,
+                                   'eventid' => $eventid,
+                                   'userid' => $cuserid
+                                ];
+
+                                $result53 = $DB->get_record_sql($sql53, $params);
                                 if ($result53) {
                                     $nbrecent = $result53->nbdone;
                                     if ($nbrecent > 0) {
@@ -570,8 +706,8 @@ class block_socialflow extends block_base {
                             $haslatesubmit = $row->haslatesubmit;
                             if ($hasclosingdate > 0) {
                                 // Get the closing date information.
-                                $sql6 = "SELECT closingdate FROM {logstore_socialflow_closing} WHERE hitid=" . $hitid;
-                                $result6 = $DB->get_record_sql($sql6);
+                                $sql6 = "SELECT closingdate FROM {logstore_socialflow_closing} WHERE hitid = :hitid";
+                                $result6 = $DB->get_record_sql($sql6, ['hitid' => $hitid]);
                                 // Error on $result6 should not arrise has far as all hits have a closingdate completed.
                                 // But let make sure it works whatever.
                                 if ($result6) {
