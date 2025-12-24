@@ -100,7 +100,7 @@ The logstore has the following options:
 
 # Data privacy
 
-Social Flow plugins log no personal data. 
+Social Flow plugins log some personal data like any log plugin. 
 
 When an event is triggered inside of Moodle, the following data is logged by the logstore plugin:
 
