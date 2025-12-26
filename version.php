@@ -24,9 +24,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2025122202;         // The current plugin version (Date: YYYYMMDDXX).
+$plugin->version   = 2025122601;         // The current plugin version (Date: YYYYMMDDXX).
 $plugin->requires  = 2020061507;         // Requires this Moodle version.
 $plugin->component = 'block_socialflow'; // Full name of the plugin (used for diagnostics).
 $plugin->maturity = MATURITY_RC;
-$plugin->release = '1.0.8 (RC)';
+$plugin->release = '1.0.9 (RC)';
 $plugin->dependencies = ['logstore_socialflow' => 2022081800];
