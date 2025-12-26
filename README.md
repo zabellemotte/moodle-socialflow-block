@@ -129,8 +129,7 @@ Table: `logstore_socialflow_log`
 In addition, there are helper tables, that do not store data-privacy related data and only exist to speed up queries or to minimize storage requirements.
 
 This plugin was developed with data privacy in mind.
-It proceeds a new data treatement that is clearly described in the help tab of the block plugin to ensure efficient user information.
-![Social flow help](img/SocialflowBlockV1help.png)
+It proceeds a new data treatement that is clearly described in the help tab of the block plugin to ensure efficient user information (see illustration above).
 This new treatement should be described in the data privacy statement.
 
 # Reference
