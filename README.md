@@ -110,7 +110,7 @@ As you may want to decline the survey in several languages, the sentence to invi
 
 ```$string['surveytextend'] = ".</div>";```
 
-If the `surveylink` string is non empty, the sentence to invite students to answer the feedback form will be added the the help tab as shown bellow :
+If the `surveylink` string is non empty, the sentence to invite students to answer the feedback form will be added at the end of the help tab as shown bellow :
 ![Social flow help](img/SocialflowBlockV1help.png)
 
 # Data privacy
