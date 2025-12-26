@@ -98,6 +98,18 @@ The logstore has the following options:
 - `nontracking_roles`: Define which roles should not be tracked. This is useful if you don't want to track specific roles (like managers or teachers). By default, no roles are ignored. Example: teacher,editingteacher,manager. See Role Tracking for more information.
 - `buffersize`: Same as buffersize of other loggers. In case a single page fires more than one event, this is the number of events that will be buffered before writing them to database. Defaults to 50.
 
+# Feedback form integration
+The block plugin make it possible to integrate a link toward a feedback form to collect students appreciation about social flow.
+As you may want to decline the survey in several languages, the sentence to invite students to answer the feedback form has been composed based on the below langage strings :
+
+```$string['surveylink'] = "";```
+```$string['surveytextintro'] = "<div>Do not forget to  ";```
+```$string['surveytextlink'] = "give us your opinion on social flow";```
+```$string['surveytextend'] = ".</div>";```
+
+If the `surveylink` string is non empty, the sentence to invite students to answer the feedback form will be added the the help tab as shown bellow :
+![Social flow help](img/SocialflowBlockV1help.png)
+
 # Data privacy
 
 Social Flow plugins log some personal data like any log plugin. 
