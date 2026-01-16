@@ -72,6 +72,9 @@ Note that `\logstore_socialflow\task\cleanup_task` performs data cleanup in the 
 
 If needed, the scheduled tasks may be runned manually while following the [Official documentation on scheduled tasks](https://docs.moodle.org/500/en/Scheduled_tasks).
 
+If you want to test the plugins on a big production Moodle, first install the log plugin, wait some days and run the above cron tasks manually during off-peak hours.
+The cron task should take few minutes to execute. If cron tasks execution time remains reasonable, you may use the plugins without risk.
+
 ## Import data from logstore_standard
 
 After installation, all data are empty as no data has been logged so far. But your Moodle site might log data through Moodle's own logging system, the `logstore_standard_log`. The logstore plugin offers a simple way to import that data by using the import.php script. It can be called from the shell like this:
