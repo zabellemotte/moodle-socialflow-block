@@ -38,7 +38,7 @@ First, download and install the [last official version of plugin logstore_social
 
 Afterwards, install the [last official version of plugin block_socialflow](https://moodle.org/plugins/block_socialflow).
 
-## Cutomize the logged events
+## Cutomize the logged events (optional)
 The social flow stores only a selection of events linked to student actions performed in the courses.
 Detailed informations about Moodle event API may be found in [Moodle Event API documentation page](https://docs.moodle.org/dev/Events_API). 
 The logged actions are stored in the `logstore_socialflow_evts` table, that you may augment with your additionnal plugins events.
@@ -73,7 +73,7 @@ Note that `\logstore_socialflow\task\cleanup_task` performs data cleanup in the 
 If needed, the scheduled tasks may be runned manually while following the [Official documentation on scheduled tasks](https://docs.moodle.org/500/en/Scheduled_tasks).
 
 If you want to test the plugins on a big production Moodle, first install the log plugin, wait some days and run the above cron tasks manually during off-peak hours.
-The cron task should take few minutes to execute. If cron tasks execution time remains reasonable, you may use the plugins without risk.
+The cron task should take few minutes to execute. If cron tasks execution time remains reasonable after one month, you may use the plugins without risk.
 
 ## Import data from logstore_standard
 
