@@ -102,15 +102,8 @@ The logstore has the following options:
 
 # Feedback form integration
 The block plugin make it possible to integrate a link toward a feedback form to collect students appreciation about social flow.
-As you may want to decline the survey in several languages, the sentence to invite students to answer the feedback form has been composed based on the below langage strings :
-
-```$string['surveylink'] = "";```
-
-```$string['surveytextintro'] = "<div>Do not forget to  ";```
-
-```$string['surveytextlink'] = "give us your opinion on social flow";```
-
-```$string['surveytextend'] = ".</div>";```
+As you may want to decline the survey in several languages, the survey url to invite students to answer the feedback form has been integrated to the lang string
+```surveystring``` that you may customize directly from your Moodle administration menu following the [Moodle offical documentation page on langage customization](https://docs.moodle.org/501/en/Language_customisation).
 
 If the `surveylink` string is non empty, the sentence to invite students to answer the feedback form will be added at the end of the help tab as shown bellow :
 ![Social flow help](img/SocialflowBlockV1help.png)
