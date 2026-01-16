@@ -34,7 +34,9 @@ The Social Flow view is based on two plugins:
 - Database: MySQL/MariaDB or Postgres (other database types are implemented but have not been tested)
 
 ## Download
-First, download and install the log plugin (logstore_socialflow). Afterwards, install this plugin.
+First, download and install the [last official version of plugin logstore_socialflow](https://moodle.org/plugins/logstore_socialflow). 
+
+Afterwards, install the [last official version of plugin block_socialflow](https://moodle.org/plugins/block_socialflow).
 
 ## Cutomize the logged events
 The social flow stores only a selection of events linked to student actions performed in the courses.
