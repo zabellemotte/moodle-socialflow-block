@@ -30,7 +30,7 @@ The Social Flow view is based on two plugins:
 # Installation
 
 ## Requirements
-- Moodle: Version 4.4 or higher (currently testing with 4.4, 4.5, 5.0 and 5.1)
+- Moodle: Version 4.4 or higher (currently testing with 4.4, 4.5, 5.0, 5.1 and 5.2)
 - Database: MySQL/MariaDB or Postgres (other database types are implemented but have not been tested)
 
 ## Download
